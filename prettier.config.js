@@ -18,5 +18,5 @@ module.exports = {
   trailingComma: 'none',
   useTabs: false,
   vueIndentScriptAndStyle: false,
-  printWidth: 120,
+  printWidth: 120
 }
