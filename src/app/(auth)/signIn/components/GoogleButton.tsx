@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components'
+import { routes } from '@/lib/constants/routes.const'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -11,7 +12,7 @@ const GoogleButton = () => {
   const loginWithGoogle = async () => {
     setIsLoading(true)
     try {
-      await signIn('google')
+      await signIn('google', { callbackUrl: routes.dashboard })
     } catch (error) {
       toast.error('something went wrong')
     } finally {
