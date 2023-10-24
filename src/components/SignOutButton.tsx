@@ -9,7 +9,7 @@ const SignOutButton = () => {
     <Button
       intent='danger'
       onClick={() => {
-        void signOut({ callbackUrl: routes.home })
+        void signOut({ callbackUrl: routes.pages.home })
       }}
     >
       SignOut

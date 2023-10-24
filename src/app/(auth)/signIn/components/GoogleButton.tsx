@@ -12,7 +12,7 @@ const GoogleButton = () => {
   const loginWithGoogle = async () => {
     setIsLoading(true)
     try {
-      await signIn('google', { callbackUrl: routes.dashboard })
+      await signIn('google', { callbackUrl: routes.pages.dashboard })
     } catch (error) {
       toast.error('something went wrong')
     } finally {

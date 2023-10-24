@@ -1,5 +1,11 @@
 export const routes = {
-  home: '',
-  signIn: '/signIn',
-  dashboard: '/dashboard'
+  api: {
+    addFriend: '/api/friends/add'
+  },
+  pages: {
+    home: '/',
+    signIn: '/signIn',
+    dashboard: '/dashboard',
+    addFriend: '/dashboard/add'
+  }
 }
