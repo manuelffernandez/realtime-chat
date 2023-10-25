@@ -3,7 +3,7 @@ import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { addFriendDataValidator } from '@/lib/validations/add-friend'
 import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
-import { redisKeys } from '@/lib/constants/redis-keys'
+import { redisKeys } from '@/lib/constants/redis-keys.const'
 
 export const POST = async (req: Request) => {
   try {
