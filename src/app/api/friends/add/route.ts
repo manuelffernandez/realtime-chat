@@ -1,9 +1,6 @@
 import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { addFriendDataValidator } from '@/lib/validations/add-friend'
-import { checkFriendRequestSent } from '@/services/upstash/check-friend-request-sent'
-import { checkFriendship } from '@/services/upstash/check-friendship'
-import { getUserId } from '@/services/upstash/get-user-id'
-import { sendFriendRequestUpstash } from '@/services/upstash/send-friend-request-upstash'
+import { checkFriendRequestSent, checkFriendship, getUserId, sendFriendRequestUpstash } from '@/services/upstash'
 import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
 
