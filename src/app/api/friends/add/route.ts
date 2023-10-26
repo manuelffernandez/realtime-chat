@@ -1,13 +1,14 @@
-import { fetchRedis } from '@/helpers/redis'
 import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { addFriendDataValidator } from '@/lib/validations/add-friend'
+import { checkFriendRequestSent } from '@/services/upstash/check-friend-request-sent'
+import { checkFriendship } from '@/services/upstash/check-friendship'
+import { getUserId } from '@/services/upstash/get-user-id'
+import { sendFriendRequestUpstash } from '@/services/upstash/send-friend-request-upstash'
 import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
-import { redisKeys } from '@/lib/constants/redis-keys.const'
 
 export const POST = async (req: Request) => {
   try {
-    const { idByEmail, friendRequestsById, friendsById } = redisKeys
     const session = await getServerSession(nextAuthOptions)
     if (!session) return new Response('Unauthorized', { status: 401 })
 
@@ -15,10 +16,7 @@ export const POST = async (req: Request) => {
 
     const { email: emailToAdd } = addFriendDataValidator.parse(body)
 
-    const idToAdd = (await fetchRedis(
-      { command: 'get', args: [idByEmail(emailToAdd)] },
-      { cache: 'no-store' }
-    )) as string
+    const idToAdd = await getUserId(emailToAdd)
 
     if (!idToAdd) {
       return new Response('This person does not exist', { status: 404 })
@@ -28,26 +26,17 @@ export const POST = async (req: Request) => {
       return new Response('You cannot add yourself as a friend', { status: 400 })
     }
 
-    const isFriendRequestSent = await fetchRedis(
-      { command: 'sismember', args: [friendRequestsById(idToAdd), session.user.id] },
-      { cache: 'no-store' }
-    )
+    const isFriendRequestSent = await checkFriendRequestSent(idToAdd, session.user.id)
 
     if (isFriendRequestSent) return new Response('Friend request already sent', { status: 400 })
 
-    const isFriend = (await fetchRedis(
-      { command: 'sismember', args: [friendsById(idToAdd), session.user.id] },
-      { cache: 'no-store' }
-    )) as 0 | 1
+    const isFriend = await checkFriendship(idToAdd, session.user.id)
 
     if (isFriend) {
       return new Response('The user you are trying to send the request to is already your friend', { status: 400 })
     }
 
-    await fetchRedis({
-      command: 'sadd',
-      args: [friendRequestsById(idToAdd), session.user.id]
-    })
+    await sendFriendRequestUpstash(idToAdd, session.user.id)
 
     return new Response('OK')
   } catch (error) {
