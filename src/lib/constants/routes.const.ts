@@ -6,6 +6,7 @@ export const routes = {
     home: '/',
     signIn: '/signIn',
     dashboard: '/dashboard',
-    addFriend: '/dashboard/add'
+    addFriend: '/dashboard/add-friend',
+    friendRequests: '/dashboard/requests'
   }
 }
