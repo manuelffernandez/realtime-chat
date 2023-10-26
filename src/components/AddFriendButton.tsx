@@ -2,7 +2,7 @@
 
 import { Button } from '@/components'
 import { addFriendDataValidator } from '@/lib/validations/add-friend'
-import { sendFriendRequest } from '@/services/send-friend-request'
+import { sendFriendRequestAPI } from '@/services/api/send-friend-request-api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
@@ -24,7 +24,7 @@ const AddFriendButton = () => {
   const addFriend = async (email: string) => {
     setShowSuccessState(false)
     try {
-      await sendFriendRequest(email)
+      await sendFriendRequestAPI(email)
 
       setShowSuccessState(true)
     } catch (error) {
