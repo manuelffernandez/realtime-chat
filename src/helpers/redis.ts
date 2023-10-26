@@ -5,7 +5,7 @@ interface RedisRequest {
   args: Array<string | number>
 }
 
-export const fetchRedis = async (req: RedisRequest, init: RequestInit | undefined = {}) => {
+export const fetchRedis = async <T = any>(req: RedisRequest, init: RequestInit | undefined = {}): Promise<T> => {
   const { command, args } = req
   const commandUrl = `${process.env.UPSTASH_REDIS_REST_URL ?? ''}/${command}/${args.join('/')}`
 
@@ -21,6 +21,5 @@ export const fetchRedis = async (req: RedisRequest, init: RequestInit | undefine
   }
 
   const data = await response.json()
-
   return data.result
 }
