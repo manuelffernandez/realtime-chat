@@ -1,6 +1,8 @@
 export const routes = {
   api: {
-    addFriend: '/api/friends/add'
+    addFriend: '/api/friends/add',
+    acceptFriend: '/api/friends/accept',
+    denyFriend: '/api/friends/deny'
   },
   pages: {
     home: '/',
