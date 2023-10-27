@@ -1,5 +1,7 @@
+export * from './accept-friend'
 export * from './check-friend-request-sent'
 export * from './check-friendship'
+export * from './deny-friend'
 export * from './get-friend-requests'
 export * from './get-user'
 export * from './get-user-id'
