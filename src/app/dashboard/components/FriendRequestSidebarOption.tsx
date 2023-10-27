@@ -11,7 +11,9 @@ interface Props {
 }
 
 const FriendRequestSidebarOption = (props: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { sessionId, initialUnseenRequestCount } = props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unseenRequestCount, setUnseenRequestCount] = useState(initialUnseenRequestCount)
 
   return (
