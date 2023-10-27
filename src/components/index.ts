@@ -1,3 +1,5 @@
-export { default as Button } from './Button'
 export { default as AddFriendButton } from './AddFriendButton'
+export { default as Button } from './Button'
+export { default as FriendRequests } from './FriendRequests'
+export { default as Logo } from './Logo'
 export { default as SignOutButton } from './SignOutButton'

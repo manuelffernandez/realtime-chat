@@ -7,7 +7,7 @@ import GoogleButton from './components/GoogleButton'
 const SignInPage = async () => {
   const session = await getServerSession(nextAuthOptions)
 
-  if (session) redirect(routes.dashboard)
+  if (session) redirect(routes.pages.dashboard)
 
   return (
     <div className='flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8'>

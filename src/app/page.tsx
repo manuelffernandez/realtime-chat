@@ -12,7 +12,7 @@ export default async function HomePage() {
       {session !== null ? (
         `Hola ${session.user.name}`
       ) : (
-        <Link href={routes.signIn} className='text-slate-800 hover:underline'>
+        <Link href={routes.pages.signIn} className='text-slate-800 hover:underline'>
           Sign In
         </Link>
       )}
