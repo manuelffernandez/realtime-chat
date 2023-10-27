@@ -1,4 +1,4 @@
-type Command = 'zrange' | 'sismember' | 'get' | 'smembers' | 'sadd'
+type Command = 'zrange' | 'sismember' | 'get' | 'smembers' | 'sadd' | 'srem'
 
 interface RedisRequest {
   command: Command
