@@ -11,6 +11,7 @@ interface Props {
 
 const Messages: FC<Props> = (props) => {
   const { initialMessages, sessionId } = props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const scrollDownRef = useRef<HTMLDivElement | null>(null)
 
