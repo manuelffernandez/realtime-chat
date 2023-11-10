@@ -1,17 +1,20 @@
 'use client'
 
-import { type FC, useRef, useState } from 'react'
 import { type Message } from '@/lib/validations/message'
-import { format } from 'date-fns'
 import clsx from 'clsx'
+import { format } from 'date-fns'
+import Image from 'next/image'
+import { useRef, useState, type FC } from 'react'
 
 interface Props {
   initialMessages: Message[]
   sessionId: string
+  sessionImg: string
+  chatPartner: User
 }
 
 const Messages: FC<Props> = (props) => {
-  const { initialMessages, sessionId } = props
+  const { initialMessages, sessionId, sessionImg, chatPartner } = props
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const scrollDownRef = useRef<HTMLDivElement | null>(null)
@@ -50,6 +53,22 @@ const Messages: FC<Props> = (props) => {
                   {message.text}{' '}
                   <span className='ml-2 text-xs text-gray-400'>{formatTimestamp(message.timestamp)}</span>
                 </span>
+              </div>
+
+              <div
+                className={clsx('relative h-6 w-6', {
+                  'order-2': isCurrentUser,
+                  'order-1': !isCurrentUser,
+                  invisible: hasNextMsgFromSameUser
+                })}
+              >
+                <Image
+                  fill
+                  src={isCurrentUser ? sessionImg : chatPartner.image}
+                  alt='profile picture'
+                  referrerPolicy='no-referrer'
+                  className='rounded-full'
+                />
               </div>
             </div>
           </div>
