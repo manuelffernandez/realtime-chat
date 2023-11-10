@@ -1,12 +1,12 @@
+import { ChatInput, Messages } from '@/components'
 import { fetchRedis } from '@/helpers/redis'
 import { nextAuthOptions } from '@/lib/constants/auth.const'
-import { getUser } from '@/services/upstash'
-import { getServerSession } from 'next-auth'
-import { notFound } from 'next/navigation'
 import { redisKeys } from '@/lib/constants/redis-keys.const'
 import { messageArrayValidator } from '@/lib/validations/message'
+import { getUser } from '@/services/upstash'
+import { getServerSession } from 'next-auth'
 import Image from 'next/image'
-import { ChatInput, Messages } from '@/components'
+import { notFound } from 'next/navigation'
 
 interface Props {
   params: {
@@ -68,7 +68,12 @@ const ChatIdPage = async (props: Props) => {
           </div>
         </div>
       </div>
-      <Messages initialMessages={initialMessages} sessionId={session.user.id} />
+      <Messages
+        sessionImg={session.user.image}
+        chatPartner={chatPartner}
+        initialMessages={initialMessages}
+        sessionId={session.user.id}
+      />
       <ChatInput chatPartner={chatPartner} chatId={chatId} />
     </div>
   )
