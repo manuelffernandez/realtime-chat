@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { type ReactNode } from 'react'
 import Navbar from './components/Navbar'
+import { getFriends } from '@/services/upstash'
 
 interface Props {
   children: ReactNode
@@ -16,13 +17,15 @@ const DashboardLayout = async (props: Props) => {
   const session = await getServerSession(nextAuthOptions)
   if (!session) notFound()
 
+  const friends = await getFriends(session.user.id)
+
   return (
     <div className='flex h-screen w-full'>
       <div className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
         <Link href={routes.pages.dashboard} className='flex h-16 shrink-0 items-center'>
           <Logo className='h-8 w-auto text-indigo-600' />
         </Link>
-        <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div>
+        {friends.length > 0 ? <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div> : null}
         <Navbar session={session} />
       </div>
       {children}

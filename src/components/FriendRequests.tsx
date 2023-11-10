@@ -74,9 +74,7 @@ const FriendRequests: FC<Props> = (props) => {
               }}
               aria-label='deny friend'
               className={`grid h-8 w-8 place-items-center rounded-full ${clsx(
-                isSubmitting
-                  ? 'cursor-default bg-indigo-300'
-                  : 'bg-indigo-600 transition hover:bg-indigo-700 hover:shadow-md'
+                isSubmitting ? 'cursor-default bg-indigo-300' : 'bg-red-600 transition hover:bg-red-700 hover:shadow-md'
               )}`}
             >
               <X className='h-3/4 w-3/4 font-semibold text-white' />
