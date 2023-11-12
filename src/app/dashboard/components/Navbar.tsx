@@ -1,6 +1,6 @@
 import { SidebarChatList, SignOutButton } from '@/components'
 import { routes } from '@/lib/constants/routes.const'
-import { getFriendRequests, getFriends } from '@/services/upstash'
+import { getFriends } from '@/services/upstash'
 import { UserPlus, type LucideIcon } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
@@ -30,7 +30,6 @@ const sidebarOptions: SidebarOption[] = [
 
 const Navbar = async (props: Props) => {
   const { session } = props
-  const unseenRequestCount = (await getFriendRequests(session.user.id)).length
   const friends = await getFriends(session.user.id)
 
   return (
@@ -59,7 +58,7 @@ const Navbar = async (props: Props) => {
               )
             })}
             <li>
-              <FriendRequestSidebarOption sessionId={session.user.id} initialUnseenRequestCount={unseenRequestCount} />
+              <FriendRequestSidebarOption />
             </li>
           </ul>
         </li>
