@@ -1,10 +1,17 @@
 import { nextAuthOptions } from '@/lib/constants/auth.const'
-import { type Message, messageValidator } from '@/lib/validations/message'
+import { pusher } from '@/lib/constants/pusher.const'
+import { pusherServer } from '@/lib/pusher'
+import { messageValidator, type Message } from '@/lib/validations/message'
 import { checkFriendship, sendMessage } from '@/services/upstash'
-import { getServerSession } from 'next-auth'
 import { nanoid } from 'nanoid'
+import { getServerSession } from 'next-auth'
 
 export const POST = async (req: Request) => {
+  const {
+    channels: { chatById },
+    events: { incomingMessage }
+  } = pusher
+
   try {
     const session = await getServerSession(nextAuthOptions)
     if (!session) return new Response('Unauthorized, invalid session', { status: 401 })
@@ -36,11 +43,14 @@ export const POST = async (req: Request) => {
     const message = messageValidator.parse(messageData)
 
     await sendMessage(chatId, message)
+    await pusherServer.trigger(chatById(chatId), incomingMessage, message)
+
     return new Response('OK')
   } catch (error) {
+    console.log(error)
+
     if (error instanceof Error) return new Response(error.message, { status: 500 })
 
-    console.log(error)
     return new Response('Internal server Error', { status: 500 })
   }
 }

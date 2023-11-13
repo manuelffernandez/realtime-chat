@@ -1,23 +1,43 @@
 'use client'
 
+import { pusher } from '@/lib/constants/pusher.const'
+import { pusherClient } from '@/lib/pusher'
 import { type Message } from '@/lib/validations/message'
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import Image from 'next/image'
-import { useRef, useState, type FC } from 'react'
+import { useEffect, useRef, useState, type FC } from 'react'
 
 interface Props {
   initialMessages: Message[]
   sessionId: string
+  chatId: string
   sessionImg: string
   chatPartner: User
 }
 
 const Messages: FC<Props> = (props) => {
-  const { initialMessages, sessionId, sessionImg, chatPartner } = props
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { initialMessages, sessionId, chatId, sessionImg, chatPartner } = props
+  const {
+    channels: { chatById },
+    events: { incomingMessage }
+  } = pusher
+
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const scrollDownRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const messageHandler = (message: Message) => {
+      setMessages((prev) => [message, ...prev])
+    }
+    pusherClient.subscribe(chatById(chatId))
+    pusherClient.bind(incomingMessage, messageHandler)
+
+    return () => {
+      pusherClient.unsubscribe(chatById(chatId))
+      pusherClient.unbind(incomingMessage, messageHandler)
+    }
+  }, [])
 
   const formatTimestamp = (ts: number) => {
     return format(ts, 'HH:mm')

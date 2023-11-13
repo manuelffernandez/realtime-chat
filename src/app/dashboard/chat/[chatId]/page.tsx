@@ -73,6 +73,7 @@ const ChatIdPage = async (props: Props) => {
         chatPartner={chatPartner}
         initialMessages={initialMessages}
         sessionId={session.user.id}
+        chatId={chatId}
       />
       <ChatInput chatPartner={chatPartner} chatId={chatId} />
     </div>
