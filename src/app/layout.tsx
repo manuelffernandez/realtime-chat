@@ -2,6 +2,7 @@ import Providers from '@/providers/Providers'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
+import GlobalToasts from '@/app/_components/GlobalToasts'
 
 const poppins = Poppins({
   subsets: ['devanagari'],
@@ -21,7 +22,10 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang='en'>
       <body className={poppins.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <GlobalToasts />
+          {children}
+        </Providers>
       </body>
     </html>
   )

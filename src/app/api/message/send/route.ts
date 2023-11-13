@@ -8,8 +8,8 @@ import { getServerSession } from 'next-auth'
 
 export const POST = async (req: Request) => {
   const {
-    channels: { chatById },
-    events: { incomingMessage }
+    channels: { chatById, userChats },
+    events: { incomingMessage, newMessage }
   } = pusher
 
   try {
@@ -29,8 +29,8 @@ export const POST = async (req: Request) => {
       return new Response('Unauthorized, invalid chat id', { status: 401 })
     }
 
-    const friendId = session.user.id === userId1 ? userId2 : userId1
-    const isFriend = await checkFriendship(session.user.id, friendId)
+    const receiverId = session.user.id === userId1 ? userId2 : userId1
+    const isFriend = await checkFriendship(session.user.id, receiverId)
     if (!isFriend) return new Response('Unauthorized', { status: 401 })
 
     const messageData: Message = {
@@ -44,6 +44,11 @@ export const POST = async (req: Request) => {
 
     await sendMessage(chatId, message)
     await pusherServer.trigger(chatById(chatId), incomingMessage, message)
+    await pusherServer.trigger(userChats(receiverId), newMessage, {
+      ...message,
+      senderImg: session.user.image,
+      senderName: session.user.name
+    })
 
     return new Response('OK')
   } catch (error) {
