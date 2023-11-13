@@ -19,7 +19,7 @@ export const fetchRedis = async <T = any>(req: RedisRequest, init: RequestInit |
   })
 
   if (!response.ok) {
-    throw new Error(`Error executing Redis command ${response.statusText}`)
+    throw new Error(`Error executing Redis command: ${response.statusText}`)
   }
 
   const data = await response.json()
