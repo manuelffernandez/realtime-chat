@@ -2,6 +2,7 @@
 
 import { chatIdConstructor } from '@/helpers/chat-id-constructor'
 import { routes } from '@/lib/constants/routes.const'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -32,7 +33,7 @@ const SidebarChatList = (props: Props) => {
 
         return (
           <li key={friend.id}>
-            <a
+            <Link
               href={`${routes.pages.chat}/${chatIdConstructor(sessionId, friend.id)}`}
               className='group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600'
             >
@@ -42,7 +43,7 @@ const SidebarChatList = (props: Props) => {
                   {unseenMessagesCount}
                 </div>
               ) : null}
-            </a>
+            </Link>
           </li>
         )
       })}
