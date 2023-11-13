@@ -6,6 +6,6 @@ export const pusher = {
   events: {
     incomingFriendRequests: 'incoming_friend_requests',
     outgoingFriendRequests: 'outgoing_friend_requests',
-    incomingMessage: 'incoming-message'
+    incomingMessage: 'incoming_message'
   }
 }
