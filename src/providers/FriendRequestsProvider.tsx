@@ -46,7 +46,7 @@ const reducer = (state: State, action: Action): State => {
 const FriendRequestsProvider = ({ children }: { children: ReactNode }) => {
   const {
     channels: { friendRequestsById },
-    events: { incomingFriendRequests, deniedFriendRequests }
+    events: { incomingFriendRequests, outgoingFriendRequests }
   } = pusher
 
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -63,12 +63,12 @@ const FriendRequestsProvider = ({ children }: { children: ReactNode }) => {
     if (status === 'authenticated') {
       pusherClient.subscribe(friendRequestsById(session.user.id))
       pusherClient.bind(incomingFriendRequests, handleAdd)
-      pusherClient.bind(deniedFriendRequests, handleRemove)
+      pusherClient.bind(outgoingFriendRequests, handleRemove)
 
       return () => {
         pusherClient.unsubscribe(friendRequestsById(session.user.id))
         pusherClient.unbind(incomingFriendRequests, handleAdd)
-        pusherClient.unbind(deniedFriendRequests, handleRemove)
+        pusherClient.unbind(outgoingFriendRequests, handleRemove)
       }
     }
   }, [status])

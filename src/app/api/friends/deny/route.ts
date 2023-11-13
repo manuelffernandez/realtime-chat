@@ -8,7 +8,7 @@ import { ZodError, z } from 'zod'
 export const POST = async (req: Request) => {
   const {
     channels: { friendRequestsById },
-    events: { deniedFriendRequests }
+    events: { outgoingFriendRequests }
   } = pusher
 
   try {
@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
     if (!hasFriendRequest) return new Response('No friend request', { status: 400 })
 
     await denyFriend(session.user.id, idToDeny)
-    await pusherServer.trigger(friendRequestsById(session.user.id), deniedFriendRequests, {
+    await pusherServer.trigger(friendRequestsById(session.user.id), outgoingFriendRequests, {
       senderId: idToDeny,
       senderEmail: emailToDeny
     })

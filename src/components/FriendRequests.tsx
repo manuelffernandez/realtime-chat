@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import { Check, UserPlus, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const FriendRequests = () => {
   const router = useRouter()
@@ -14,13 +15,14 @@ const FriendRequests = () => {
   const { state } = useFriendRequests()
   const { friendRequests } = state
 
-  const acceptFriend = async (senderId: string) => {
+  const acceptFriend = async (senderId: string, senderEmail: string) => {
     setIsSubmitting(true)
     try {
-      await axios.post(routes.api.acceptFriend, { id: senderId })
+      await axios.post(routes.api.acceptFriend, { id: senderId, email: senderEmail })
 
       router.refresh()
     } catch (error) {
+      toast.error('Something went wrong')
       console.log(error)
     } finally {
       setIsSubmitting(false)
@@ -52,7 +54,7 @@ const FriendRequests = () => {
             <button
               disabled={isSubmitting}
               onClick={() => {
-                void acceptFriend(request.senderId)
+                void acceptFriend(request.senderId, request.senderEmail as string)
               }}
               aria-label='accept friend'
               className={`grid h-8 w-8 place-items-center rounded-full ${clsx(
