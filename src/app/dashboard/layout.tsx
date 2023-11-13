@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { type ReactNode } from 'react'
-import Navbar from './components/Navbar'
+import Navbar from './_components/Navbar'
 import { getFriends } from '@/services/upstash'
 
 interface Props {

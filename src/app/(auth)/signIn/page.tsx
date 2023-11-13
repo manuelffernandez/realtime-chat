@@ -2,7 +2,7 @@ import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { routes } from '@/lib/constants/routes.const'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import GoogleButton from './components/GoogleButton'
+import GoogleButton from './_components/GoogleButton'
 
 const SignInPage = async () => {
   const session = await getServerSession(nextAuthOptions)
