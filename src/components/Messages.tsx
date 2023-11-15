@@ -37,7 +37,7 @@ const Messages: FC<Props> = (props) => {
       pusherClient.unsubscribe(chatById(chatId))
       pusherClient.unbind(incomingMessage, messageHandler)
     }
-  }, [])
+  }, [chatId, incomingMessage, chatById])
 
   const formatTimestamp = (ts: number) => {
     return format(ts, 'HH:mm')
