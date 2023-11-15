@@ -43,8 +43,8 @@ export const POST = async (req: Request) => {
     const message = messageValidator.parse(messageData)
 
     await sendMessage(chatId, message)
-    await pusherServer.trigger(chatById(chatId), incomingMessage, message)
-    await pusherServer.trigger(userChats(receiverId), newMessage, {
+    void pusherServer.trigger(chatById(chatId), incomingMessage, message)
+    void pusherServer.trigger(userChats(receiverId), newMessage, {
       ...message,
       senderImg: session.user.image,
       senderName: session.user.name
