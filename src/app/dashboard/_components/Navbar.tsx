@@ -1,7 +1,7 @@
 import { SidebarChatList, SignOutButton } from '@/components'
 import { routes } from '@/lib/constants/routes.const'
 import { getFriends } from '@/services/upstash'
-import { UserPlus, type LucideIcon } from 'lucide-react'
+import { UserPlus, Users, type LucideIcon } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,6 +25,12 @@ const sidebarOptions: SidebarOption[] = [
     name: 'Add friend',
     href: routes.pages.addFriend,
     Icon: UserPlus
+  },
+  {
+    id: 2,
+    name: 'Your friends',
+    href: routes.pages.friends,
+    Icon: Users
   }
 ]
 
