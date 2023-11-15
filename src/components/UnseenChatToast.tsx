@@ -2,7 +2,6 @@ import { chatIdConstructor } from '@/helpers/chat-id-constructor'
 import { routes } from '@/lib/constants/routes.const'
 import clsx from 'clsx'
 import Image from 'next/image'
-import Link from 'next/link'
 import { type FC } from 'react'
 import toast, { type Toast } from 'react-hot-toast'
 
@@ -28,7 +27,7 @@ const UnseenChatToast: FC<Props> = (props) => {
         }
       )}
     >
-      <Link
+      <a
         onClick={() => toast.dismiss(t.id)}
         href={`${routes.pages.chat}/${chatIdConstructor(sessionId, senderId)}`}
         className='w-0 flex-1 p-4'
@@ -51,7 +50,7 @@ const UnseenChatToast: FC<Props> = (props) => {
             <p className='mt-1 text-sm text-gray-500'>{senderMessage}</p>
           </div>
         </div>
-      </Link>
+      </a>
 
       <div className='flex border-l  border-gray-200'>
         <button
