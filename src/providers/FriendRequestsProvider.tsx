@@ -8,21 +8,23 @@ import { Dispatch, useEffect, useReducer, type ReactNode } from 'react'
 import toast from 'react-hot-toast'
 import { FriendRequestsContext } from './FriendRequestsContext'
 
-export interface State {
+export interface FriendRequestsState {
   friendRequests: IncomingFriendRequest[]
 }
 
-export type Action =
+export type FriendRequestsAction =
   | { payload: IncomingFriendRequest; type: 'ADD_FRIEND_REQUEST' | 'REMOVE_FRIEND_REQUEST' }
   | { payload: IncomingFriendRequest[]; type: 'SET_FRIEND_REQUESTS' }
 
-export type Value = { state: State; dispatch: Dispatch<Action> } | { state: State }
+export type Value =
+  | { state: FriendRequestsState; dispatch: Dispatch<FriendRequestsAction> }
+  | { state: FriendRequestsState }
 
-const initialState: State = {
+const initialState: FriendRequestsState = {
   friendRequests: []
 }
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (state: FriendRequestsState, action: FriendRequestsAction): FriendRequestsState => {
   const { type, payload } = action
   switch (type) {
     case 'ADD_FRIEND_REQUEST':
