@@ -11,6 +11,7 @@ export const routes = {
     home: '/',
     signIn: '/signIn',
     dashboard: '/dashboard',
+    friends: '/dashboard/friends',
     addFriend: '/dashboard/add-friend',
     friendRequests: '/dashboard/requests',
     chat: '/dashboard/chat'
