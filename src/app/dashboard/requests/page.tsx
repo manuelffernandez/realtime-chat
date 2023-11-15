@@ -1,6 +1,6 @@
 import { FriendRequests } from '@/components'
 
-const FriendRequestsPage = async () => {
+const FriendRequestsPage = () => {
   return (
     <main className='pt-8'>
       <h1 className='mb-8 text-5xl font-bold'>Friend requests</h1>
