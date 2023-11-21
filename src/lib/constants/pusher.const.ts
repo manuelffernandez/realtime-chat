@@ -10,6 +10,7 @@ export const pusher = {
     outgoingFriendRequests: 'outgoing_friend_requests',
     incomingMessage: 'incoming_message',
     newMessage: 'new_message',
-    newFriend: 'new_friend'
+    newFriend: 'new_friend',
+    newActiveChat: 'new_active_chat'
   }
 }
