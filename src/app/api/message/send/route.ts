@@ -5,14 +5,14 @@ import { redisKeys } from '@/lib/constants/redis-keys.const'
 import { db } from '@/lib/db'
 import { pusherServer } from '@/lib/pusher'
 import { messageValidator, type Message } from '@/lib/validations/message'
-import { checkFriendship, getChats, sendMessage } from '@/services/upstash'
+import { checkFriendship, getChats } from '@/services/upstash'
 import { nanoid } from 'nanoid'
 import { getServerSession } from 'next-auth'
 
 export const POST = async (req: Request) => {
   const {
     channels: { chatById, userChats },
-    events: { incomingMessage, newMessage }
+    events: { incomingMessage, newMessage, newActiveChat }
   } = pusher
   const { chatById: chatByIdRedis, chatsByUserId } = redisKeys
 
@@ -60,8 +60,12 @@ export const POST = async (req: Request) => {
         member: JSON.stringify(message)
       })
       await tx.exec()
+      void pusherServer.trigger(userChats(senderId), newActiveChat, { chatId, partnerId: receiverId })
     } else {
-      await sendMessage(chatId, message)
+      await db.zadd(chatByIdRedis(chatId), {
+        score: message.timestamp,
+        member: JSON.stringify(message)
+      })
     }
 
     void pusherServer.trigger(chatById(chatId), incomingMessage, message)

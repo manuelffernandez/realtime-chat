@@ -4,12 +4,13 @@ import { chatIdConstructor } from '@/helpers/chat-id-constructor'
 import { pusher } from '@/lib/constants/pusher.const'
 import { routes } from '@/lib/constants/routes.const'
 import { pusherClient } from '@/lib/pusher'
+import { getUserAPI } from '@/services/api/get-user-api'
+import { MessageSquarePlus } from 'lucide-react'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import UnseenChatToast from './UnseenChatToast'
-import Link from 'next/link'
-import { MessageSquarePlus } from 'lucide-react'
 
 interface Props {
   sessionId: string
@@ -20,7 +21,7 @@ const SidebarChatList = (props: Props) => {
   const { sessionId, initialActiveChats } = props
   const {
     channels: { userChats, userFriends },
-    events: { newMessage, newFriend }
+    events: { newMessage, newFriend, newActiveChat }
   } = pusher
 
   const router = useRouter()
@@ -31,7 +32,6 @@ const SidebarChatList = (props: Props) => {
   useEffect(() => {
     const newFriendHandler = (newFriend: User) => {
       router.refresh()
-      console.log('received new user', newFriend)
       setActiveChats((prev) => [...prev, newFriend])
     }
     const chatHandler = (extendedMessage: ExtendedMessage) => {
@@ -53,17 +53,28 @@ const SidebarChatList = (props: Props) => {
       ))
       setUnseenMessages((prev) => [...prev, message])
     }
+    const newActiveChatHandler = async (newChat: CustomChat) => {
+      try {
+        const { data: newPartner } = await getUserAPI(newChat.partnerId)
+        setActiveChats((prev) => [...prev, newPartner])
+      } catch (error) {
+        toast.error('An error ocurred while creating new chat')
+        console.log('active chat handler error', error)
+      }
+    }
 
     pusherClient.subscribe(userChats(sessionId))
     pusherClient.subscribe(userFriends(sessionId))
     pusherClient.bind(newMessage, chatHandler)
     pusherClient.bind(newFriend, newFriendHandler)
+    pusherClient.bind(newActiveChat, newActiveChatHandler)
 
     return () => {
       pusherClient.unsubscribe(userChats(sessionId))
       pusherClient.unsubscribe(userFriends(sessionId))
       pusherClient.unbind(newMessage, chatHandler)
       pusherClient.unbind(newFriend, newFriendHandler)
+      pusherClient.unbind(newActiveChat, newActiveChatHandler)
     }
   }, [pathname, sessionId])
 

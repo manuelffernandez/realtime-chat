@@ -37,7 +37,19 @@ const sidebarOptions: SidebarOption[] = [
 const Navbar = async (props: Props) => {
   const { session } = props
   const chats = await getChats(session.user.id)
-  const initialActiveChats = await Promise.all(chats.map(async (chat) => await getUser(chat.partnerId)))
+  const initialActiveChats = (
+    await Promise.all(
+      chats.map(async (chat) => {
+        try {
+          const user = await getUser(chat.partnerId)
+          return user
+        } catch (error) {
+          console.log('get active chat error', error)
+          return null
+        }
+      })
+    )
+  ).filter((user) => user !== null) as User[]
 
   return (
     <nav className='flex flex-1 flex-col'>
