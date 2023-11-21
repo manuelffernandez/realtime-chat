@@ -1,20 +1,13 @@
 'use client'
 
+import { useFriendRequests } from '@/hooks/useFriendRequests'
 import { routes } from '@/lib/constants/routes.const'
-import { User } from 'lucide-react'
+import { UserCheck } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
 
-interface Props {
-  sessionId: string
-  initialUnseenRequestCount: number
-}
-
-const FriendRequestSidebarOption = (props: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { sessionId, initialUnseenRequestCount } = props
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [unseenRequestCount, setUnseenRequestCount] = useState(initialUnseenRequestCount)
+const FriendRequestSidebarOption = () => {
+  const { state } = useFriendRequests()
+  const { friendRequests } = state
 
   return (
     <Link
@@ -22,12 +15,12 @@ const FriendRequestSidebarOption = (props: Props) => {
       className='group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600'
     >
       <div className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600'>
-        <User className='h-4 w-4' />
+        <UserCheck className='h-4 w-4' />
       </div>
       <p className='truncate'> Friend requests</p>
-      {unseenRequestCount > 0 ? (
+      {friendRequests.length > 0 ? (
         <div className='flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-xs text-white'>
-          {unseenRequestCount}
+          {friendRequests.length}
         </div>
       ) : null}
     </Link>

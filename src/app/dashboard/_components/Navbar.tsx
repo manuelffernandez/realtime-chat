@@ -1,7 +1,7 @@
 import { SidebarChatList, SignOutButton } from '@/components'
 import { routes } from '@/lib/constants/routes.const'
-import { getFriendRequests, getFriends } from '@/services/upstash'
-import { UserPlus, type LucideIcon } from 'lucide-react'
+import { getChats, getUser } from '@/services/upstash'
+import { UserPlus, Users, type LucideIcon } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,19 +25,37 @@ const sidebarOptions: SidebarOption[] = [
     name: 'Add friend',
     href: routes.pages.addFriend,
     Icon: UserPlus
+  },
+  {
+    id: 2,
+    name: 'Your friends',
+    href: routes.pages.friends,
+    Icon: Users
   }
 ]
 
 const Navbar = async (props: Props) => {
   const { session } = props
-  const unseenRequestCount = (await getFriendRequests(session.user.id)).length
-  const friends = await getFriends(session.user.id)
+  const chats = await getChats(session.user.id)
+  const initialActiveChats = (
+    await Promise.all(
+      chats.map(async (chat) => {
+        try {
+          const user = await getUser(chat.partnerId)
+          return user
+        } catch (error) {
+          console.log('get active chat error', error)
+          return null
+        }
+      })
+    )
+  ).filter((user) => user !== null) as User[]
 
   return (
     <nav className='flex flex-1 flex-col'>
       <ul role='list' className='flex flex-1 flex-col gap-y-7'>
         <li>
-          <SidebarChatList sessionId={session.user.id} friends={friends} />
+          <SidebarChatList sessionId={session.user.id} initialActiveChats={initialActiveChats} />
         </li>
         <li>
           <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>
@@ -59,7 +77,7 @@ const Navbar = async (props: Props) => {
               )
             })}
             <li>
-              <FriendRequestSidebarOption sessionId={session.user.id} initialUnseenRequestCount={unseenRequestCount} />
+              <FriendRequestSidebarOption />
             </li>
           </ul>
         </li>

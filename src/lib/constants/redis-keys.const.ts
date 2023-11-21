@@ -1,7 +1,8 @@
 export const redisKeys = {
-  userById: (id: string) => `user:${id}`,
+  userById: (userId: string) => `user:${userId}`,
   idByEmail: (email: string) => `user:email:${email}`,
-  friendRequestsById: (id: string) => `user:${id}:friend_requests:incoming`,
-  friendsById: (id: string) => `user:${id}:friends`,
-  chatById: (chatId: string) => `chat:${chatId}:messages`
+  friendRequestsById: (UserId: string) => `user:${UserId}:friend_requests:incoming`,
+  friendsById: (userId: string) => `user:${userId}:friends`,
+  chatById: (chatId: string) => `chat:${chatId}:messages`,
+  chatsByUserId: (userId: string) => `user:${userId}:chats`
 }

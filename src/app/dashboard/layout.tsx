@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { type ReactNode } from 'react'
-import Navbar from './components/Navbar'
+import Navbar from './_components/Navbar'
 import { getFriends } from '@/services/upstash'
 
 interface Props {
@@ -28,7 +28,7 @@ const DashboardLayout = async (props: Props) => {
         {friends.length > 0 ? <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div> : null}
         <Navbar session={session} />
       </div>
-      {children}
+      <aside className='nax-h-screen container w-full py-16 md:py-12'>{children}</aside>
     </div>
   )
 }
