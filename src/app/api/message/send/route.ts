@@ -60,7 +60,8 @@ export const POST = async (req: Request) => {
         member: JSON.stringify(message)
       })
       await tx.exec()
-      void pusherServer.trigger(userChats(senderId), newActiveChat, { chatId, partnerId: receiverId })
+      await pusherServer.trigger(userChats(senderId), newActiveChat, { chatId, partnerId: receiverId })
+      await pusherServer.trigger(userChats(receiverId), newActiveChat, { chatId, partnerId: senderId })
     } else {
       await db.zadd(chatByIdRedis(chatId), {
         score: message.timestamp,
