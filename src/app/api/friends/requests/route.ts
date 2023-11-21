@@ -9,15 +9,18 @@ export const GET = async () => {
 
     const friendRequests = await getFriendRequests(session.user.id)
 
-    const incomingFriendRequests = await Promise.all(
-      friendRequests.map(async (senderId) => {
-        const sender = await getUser(senderId)
-        return {
-          senderId,
-          senderEmail: sender.email
-        }
-      })
-    )
+    const incomingFriendRequests = (
+      await Promise.all(
+        friendRequests.map(async (senderId) => {
+          const sender = await getUser(senderId)
+          if (sender === null) return null
+          return {
+            senderId,
+            senderEmail: sender.email
+          }
+        })
+      )
+    ).filter((item) => item !== null)
 
     return new Response(JSON.stringify(incomingFriendRequests))
   } catch (error) {

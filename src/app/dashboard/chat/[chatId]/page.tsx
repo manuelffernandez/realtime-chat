@@ -2,11 +2,12 @@ import { ChatInput, Messages } from '@/components'
 import { fetchRedis } from '@/helpers/redis'
 import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { redisKeys } from '@/lib/constants/redis-keys.const'
+import { routes } from '@/lib/constants/routes.const'
 import { messageArrayValidator } from '@/lib/validations/message'
 import { getUser } from '@/services/upstash'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 interface Props {
   params: {
@@ -33,7 +34,7 @@ const ChatIdPage = async (props: Props) => {
   const { params } = props
   const { chatId } = params
   const session = await getServerSession(nextAuthOptions)
-  if (!session) notFound()
+  if (!session) redirect(routes.pages.signIn)
 
   const DELIMITER = '--'
   const [userId1, userId2] = chatId.split(DELIMITER)
@@ -42,6 +43,7 @@ const ChatIdPage = async (props: Props) => {
 
   const chatPartnerId = session.user.id === userId1 ? userId2 : userId1
   const chatPartner = await getUser(chatPartnerId)
+  if (chatPartner === null) notFound()
   const initialMessages = await getChatMessages(chatId)
 
   return (
