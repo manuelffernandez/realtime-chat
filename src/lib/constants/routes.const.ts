@@ -5,7 +5,8 @@ export const routes = {
     denyFriend: '/api/friends/deny',
     sendMessage: '/api/message/send',
     friendRequests: '/api/friends/requests',
-    chat: 'api/message'
+    chat: 'api/message',
+    getUser: 'api/user/get'
   },
   pages: {
     home: '/',
