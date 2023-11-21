@@ -23,3 +23,8 @@ interface FriendRequest {
   senderId: string
   receiverId: string
 }
+
+interface CustomChat {
+  chatId: string
+  partnerId: string
+}

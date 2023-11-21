@@ -1,6 +1,6 @@
 import { SidebarChatList, SignOutButton } from '@/components'
 import { routes } from '@/lib/constants/routes.const'
-import { getFriends } from '@/services/upstash'
+import { getChats, getUser } from '@/services/upstash'
 import { UserPlus, Users, type LucideIcon } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
@@ -36,13 +36,14 @@ const sidebarOptions: SidebarOption[] = [
 
 const Navbar = async (props: Props) => {
   const { session } = props
-  const friends = await getFriends(session.user.id)
+  const chats = await getChats(session.user.id)
+  const initialActiveChats = await Promise.all(chats.map(async (chat) => await getUser(chat.partnerId)))
 
   return (
     <nav className='flex flex-1 flex-col'>
       <ul role='list' className='flex flex-1 flex-col gap-y-7'>
         <li>
-          <SidebarChatList sessionId={session.user.id} friends={friends} />
+          <SidebarChatList sessionId={session.user.id} initialActiveChats={initialActiveChats} />
         </li>
         <li>
           <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>

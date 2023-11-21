@@ -1,8 +1,11 @@
+// import { fetchRedis } from '@/helpers/redis'
 import { nextAuthOptions } from '@/lib/constants/auth.const'
 import { pusher } from '@/lib/constants/pusher.const'
+import { redisKeys } from '@/lib/constants/redis-keys.const'
+import { db } from '@/lib/db'
 import { pusherServer } from '@/lib/pusher'
 import { messageValidator, type Message } from '@/lib/validations/message'
-import { checkFriendship, sendMessage } from '@/services/upstash'
+import { checkFriendship, getChats, sendMessage } from '@/services/upstash'
 import { nanoid } from 'nanoid'
 import { getServerSession } from 'next-auth'
 
@@ -11,6 +14,7 @@ export const POST = async (req: Request) => {
     channels: { chatById, userChats },
     events: { incomingMessage, newMessage }
   } = pusher
+  const { chatById: chatByIdRedis, chatsByUserId } = redisKeys
 
   try {
     const session = await getServerSession(nextAuthOptions)
@@ -30,19 +34,36 @@ export const POST = async (req: Request) => {
     }
 
     const receiverId = session.user.id === userId1 ? userId2 : userId1
-    const isFriend = await checkFriendship(session.user.id, receiverId)
+    const senderId = session.user.id
+    const isFriend = await checkFriendship(senderId, receiverId)
     if (!isFriend) return new Response('Unauthorized', { status: 401 })
 
     const messageData: Message = {
       id: nanoid(),
-      senderId: session.user.id,
+      senderId,
       timestamp: Date.now(),
       text
     }
 
     const message = messageValidator.parse(messageData)
 
-    await sendMessage(chatId, message)
+    const chats = await getChats(senderId)
+    const chatExists = chats.some((chat) => chat.chatId === chatId)
+
+    // TODO: use transaction instead
+    if (!chatExists) {
+      const tx = db.multi()
+      tx.sadd(chatsByUserId(senderId), JSON.stringify({ chatId, partnerId: receiverId }))
+      tx.sadd(chatsByUserId(receiverId), JSON.stringify({ chatId, partnerId: senderId }))
+      tx.zadd(chatByIdRedis(chatId), {
+        score: message.timestamp,
+        member: JSON.stringify(message)
+      })
+      await tx.exec()
+    } else {
+      await sendMessage(chatId, message)
+    }
+
     void pusherServer.trigger(chatById(chatId), incomingMessage, message)
     void pusherServer.trigger(userChats(receiverId), newMessage, {
       ...message,

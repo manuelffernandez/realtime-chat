@@ -12,12 +12,12 @@ import Link from 'next/link'
 import { MessageSquarePlus } from 'lucide-react'
 
 interface Props {
-  friends: User[]
   sessionId: string
+  initialActiveChats: User[]
 }
 
 const SidebarChatList = (props: Props) => {
-  const { friends, sessionId } = props
+  const { sessionId, initialActiveChats } = props
   const {
     channels: { userChats, userFriends },
     events: { newMessage, newFriend }
@@ -26,7 +26,7 @@ const SidebarChatList = (props: Props) => {
   const router = useRouter()
   const pathname = usePathname()
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
-  const [activeChats, setActiveChats] = useState<User[]>(friends)
+  const [activeChats, setActiveChats] = useState(initialActiveChats)
 
   useEffect(() => {
     const newFriendHandler = (newFriend: User) => {
