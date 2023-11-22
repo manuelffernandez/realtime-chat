@@ -23,7 +23,7 @@ const FriendRequests = () => {
       router.refresh()
     } catch (error) {
       toast.error('Something went wrong')
-      console.log(error)
+      console.log('accept friend handler error', error)
     } finally {
       setIsSubmitting(false)
     }
@@ -36,7 +36,7 @@ const FriendRequests = () => {
 
       router.refresh()
     } catch (error) {
-      console.log(error)
+      console.log('deny friend handler error', error)
     } finally {
       setIsSubmitting(false)
     }

@@ -34,7 +34,7 @@ export const POST = async (req: Request) => {
 
     return new Response('OK')
   } catch (error) {
-    console.log(error)
+    console.log('accept friend route handler error', error)
 
     if (error instanceof ZodError) return new Response('Invalid request payload', { status: 422 })
 

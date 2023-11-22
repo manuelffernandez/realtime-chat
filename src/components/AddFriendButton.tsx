@@ -28,12 +28,13 @@ const AddFriendButton = () => {
 
       setShowSuccessState(true)
     } catch (error) {
+      console.log('add friend submit handler error', error)
+
       if (error instanceof AxiosError) {
         setError('email', { message: error.response?.data })
         return
       }
 
-      console.log(error)
       setError('email', { message: 'Something went wrong' })
     }
   }

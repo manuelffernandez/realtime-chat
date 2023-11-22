@@ -44,7 +44,7 @@ const Navbar = async (props: Props) => {
           const user = await getUser(chat.partnerId)
           return user
         } catch (error) {
-          console.log('get active chat error', error)
+          console.log('get user on initial active chats error', error)
           return null
         }
       })

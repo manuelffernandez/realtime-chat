@@ -39,9 +39,9 @@ export const POST = async (req: Request) => {
 
     return new Response('OK')
   } catch (error) {
-    if (error instanceof ZodError) return new Response('Invalid request payload', { status: 422 })
+    console.log('add friend route handler error', error)
 
-    console.log(error)
+    if (error instanceof ZodError) return new Response('Invalid request payload', { status: 422 })
 
     return new Response('Unexpected error, check the console', { status: 500 })
   }

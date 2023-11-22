@@ -78,7 +78,7 @@ export const POST = async (req: Request) => {
 
     return new Response('OK')
   } catch (error) {
-    console.log(error)
+    console.log('send message route handler error', error)
 
     if (error instanceof Error) return new Response(error.message, { status: 500 })
 

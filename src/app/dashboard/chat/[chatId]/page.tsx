@@ -24,7 +24,7 @@ const getChatMessages = async (chatId: string) => {
     const messages = messageArrayValidator.parse(reversedDbMessages)
     return messages
   } catch (error) {
-    console.log(error)
+    console.log('get chat messages error', error)
     // TODO: improve not-found chat case
     notFound()
   }
