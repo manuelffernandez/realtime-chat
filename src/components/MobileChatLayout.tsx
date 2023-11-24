@@ -8,18 +8,24 @@ import { Menu, X } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { sidebarOptions } from '@/lib/constants/sidebar-options.const'
+import { usePathname } from 'next/navigation'
 
 interface Props {
   friends: User[]
   session: Session
-  friendsWithChats: User[]
+  chatFriends: User[]
 }
 
 const MobileChatLayout = (props: Props) => {
-  const { friends, session, friendsWithChats } = props
+  const { friends, session, chatFriends } = props
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   return (
     <div className='fixed inset-x-0 top-0 border-b border-zinc-200 bg-zinc-50 px-4 py-2'>
@@ -74,7 +80,7 @@ const MobileChatLayout = (props: Props) => {
                         <nav className='flex flex-1 flex-col'>
                           <ul role='list' className='flex flex-1 flex-col gap-y-7'>
                             <li>
-                              <SidebarChatList friendsWithChats={friendsWithChats} sessionId={session.user.id} />
+                              <SidebarChatList initialChatFriends={chatFriends} sessionId={session.user.id} />
                             </li>
 
                             <li>

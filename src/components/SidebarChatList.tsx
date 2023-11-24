@@ -11,14 +11,15 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import UnseenChatToast from './UnseenChatToast'
+import { type Message } from '@/lib/validations/message'
 
 interface Props {
   sessionId: string
-  initialActiveChats: User[]
+  initialChatFriends: User[]
 }
 
 const SidebarChatList = (props: Props) => {
-  const { sessionId, initialActiveChats } = props
+  const { sessionId, initialChatFriends } = props
   const {
     channels: { userChats, userFriends },
     events: { newMessage, newFriend, newActiveChat }
@@ -27,12 +28,12 @@ const SidebarChatList = (props: Props) => {
   const router = useRouter()
   const pathname = usePathname()
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
-  const [activeChats, setActiveChats] = useState(initialActiveChats)
+  const [chatFriends, setChatFriends] = useState(initialChatFriends)
 
   useEffect(() => {
     const newFriendHandler = (newFriend: User) => {
       router.refresh()
-      setActiveChats((prev) => [...prev, newFriend])
+      setChatFriends((prev) => [...prev, newFriend])
     }
     const chatHandler = (extendedMessage: ExtendedMessage) => {
       const { senderImg, senderName, ...message } = extendedMessage
@@ -56,7 +57,7 @@ const SidebarChatList = (props: Props) => {
     const newActiveChatHandler = async (newChat: CustomChat) => {
       try {
         const { data: newPartner } = await getUserAPI(newChat.partnerId)
-        setActiveChats((prev) => [...prev, newPartner])
+        setChatFriends((prev) => [...prev, newPartner])
       } catch (error) {
         toast.error('An error ocurred while creating new chat')
         console.log('active chat handler error', error)
@@ -88,7 +89,7 @@ const SidebarChatList = (props: Props) => {
 
   return (
     <ul role='list' className='-mx-2 max-h-[25rem] space-y-1 overflow-y-auto'>
-      {activeChats.map((friend) => {
+      {chatFriends.map((friend) => {
         const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
           return unseenMsg.senderId === friend.id
         }).length
