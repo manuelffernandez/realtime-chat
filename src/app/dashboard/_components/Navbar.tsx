@@ -1,50 +1,27 @@
 import { SidebarChatList, SignOutButton } from '@/components'
-import { routes } from '@/lib/constants/routes.const'
+import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption'
 import { getChats, getUser } from '@/services/upstash'
-import { UserPlus, Users, type LucideIcon } from 'lucide-react'
 import { type Session } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
-import { type ElementType } from 'react'
-import FriendRequestSidebarOption from './FriendRequestSidebarOption'
+import { sidebarOptions } from '@/lib/constants/sidebar-options.const'
 
 interface Props {
   session: Session
 }
 
-interface SidebarOption {
-  id: number
-  name: string
-  href: string
-  Icon: LucideIcon | ElementType
-}
-
-const sidebarOptions: SidebarOption[] = [
-  {
-    id: 1,
-    name: 'Add friend',
-    href: routes.pages.addFriend,
-    Icon: UserPlus
-  },
-  {
-    id: 2,
-    name: 'Your friends',
-    href: routes.pages.friends,
-    Icon: Users
-  }
-]
-
 const Navbar = async (props: Props) => {
   const { session } = props
   const chats = await getChats(session.user.id)
-  const initialActiveChats = (
+  // TODO: the same async call is made in Dashboard layout, remove unnecessary fetch
+  const chatFriends = (
     await Promise.all(
       chats.map(async (chat) => {
         try {
           const user = await getUser(chat.partnerId)
           return user
         } catch (error) {
-          console.log('get active chat error', error)
+          console.log('getUser on Navbar for chatFriends error', error)
           return null
         }
       })
@@ -55,7 +32,7 @@ const Navbar = async (props: Props) => {
     <nav className='flex flex-1 flex-col'>
       <ul role='list' className='flex flex-1 flex-col gap-y-7'>
         <li>
-          <SidebarChatList sessionId={session.user.id} initialActiveChats={initialActiveChats} />
+          <SidebarChatList sessionId={session.user.id} initialChatFriends={chatFriends} />
         </li>
         <li>
           <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>

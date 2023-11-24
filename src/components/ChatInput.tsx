@@ -26,7 +26,7 @@ const ChatInput: FC<Props> = (props) => {
       setInput('')
       textareaRef.current?.focus()
     } catch (error) {
-      console.log(error)
+      console.log('send message submit handler error', error)
       toast.error('Something went wrong.')
     } finally {
       setIsLoading(false)

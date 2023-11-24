@@ -20,7 +20,7 @@ export const GET = async (req: Request, { params }: { params: { userId: string }
 
     return new Response(JSON.stringify(user))
   } catch (error) {
-    console.log(error)
+    console.log('get user by userId route handler error', error)
     return new Response('Unexpected error, check the console', { status: 500 })
   }
 }

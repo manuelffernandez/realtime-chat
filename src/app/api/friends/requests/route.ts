@@ -24,7 +24,7 @@ export const GET = async () => {
 
     return new Response(JSON.stringify(incomingFriendRequests))
   } catch (error) {
-    console.log(error)
+    console.log('get friend requests error', error)
 
     return new Response('Invalid request', { status: 400 })
   }
