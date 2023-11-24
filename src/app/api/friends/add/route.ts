@@ -43,6 +43,8 @@ export const POST = async (req: Request) => {
 
     if (error instanceof ZodError) return new Response('Invalid request payload', { status: 422 })
 
-    return new Response('Unexpected error, check the console', { status: 500 })
+    return new Response(JSON.stringify({ message: 'Unexpected internal server error', serverError: error }), {
+      status: 500
+    })
   }
 }

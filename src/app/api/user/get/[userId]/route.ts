@@ -21,6 +21,8 @@ export const GET = async (req: Request, { params }: { params: { userId: string }
     return new Response(JSON.stringify(user))
   } catch (error) {
     console.log('get user by userId route handler error', error)
-    return new Response('Unexpected error, check the console', { status: 500 })
+    return new Response(JSON.stringify({ message: 'Unexpected internal server error', serverError: error }), {
+      status: 500
+    })
   }
 }

@@ -43,6 +43,8 @@ export const POST = async (req: Request) => {
 
     if (error instanceof Error) return new Response(error.message, { status: 500 })
 
-    return new Response('Internal server Error', { status: 500 })
+    return new Response(JSON.stringify({ message: 'Unexpected internal server error', serverError: error }), {
+      status: 500
+    })
   }
 }
