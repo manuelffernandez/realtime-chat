@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth'
 import { notFound } from 'next/navigation'
 
 const FriendsPage = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 5000))
   const session = await getServerSession(nextAuthOptions)
   if (!session) return notFound()
 
