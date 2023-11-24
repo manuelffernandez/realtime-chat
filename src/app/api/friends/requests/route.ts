@@ -26,6 +26,8 @@ export const GET = async () => {
   } catch (error) {
     console.log('get friend requests error', error)
 
-    return new Response('Invalid request', { status: 400 })
+    return new Response(JSON.stringify({ message: 'Unexpected internal server error', serverError: error }), {
+      status: 500
+    })
   }
 }
