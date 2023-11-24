@@ -43,7 +43,7 @@ const DashboardLayout = async (props: Props) => {
         <Link href={routes.pages.dashboard} className='flex h-16 shrink-0 items-center'>
           <Logo className='h-8 w-auto text-indigo-600' />
         </Link>
-        {friends.length > 0 ? <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div> : null}
+        <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div>
         <Navbar session={session} />
       </div>
       <aside className='nax-h-screen container w-full py-16 md:py-12'>{children}</aside>
