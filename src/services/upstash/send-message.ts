@@ -34,8 +34,8 @@ export const sendMessage = async (sessionUser: User, receiverId: string, chatId:
     })
   }
 
-  void pusherServer.trigger(chatById(chatId), incomingMessage, message)
-  void pusherServer.trigger(userChats(receiverId), newMessage, {
+  await pusherServer.trigger(chatById(chatId), incomingMessage, message)
+  await pusherServer.trigger(userChats(receiverId), newMessage, {
     ...message,
     senderImg: sessionUser.image,
     senderName: sessionUser.name
