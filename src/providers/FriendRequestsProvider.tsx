@@ -55,11 +55,9 @@ const FriendRequestsProvider = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession()
 
   const handleAdd = (data: IncomingFriendRequest) => {
-    console.log('handleAdd handler incomingFriendRequests bind', data)
     dispatch({ type: 'ADD_FRIEND_REQUEST', payload: { ...data } })
   }
   const handleRemove = (data: IncomingFriendRequest) => {
-    console.log('handleRemove handler outgoingFriendRequests bind', data)
     dispatch({ type: 'REMOVE_FRIEND_REQUEST', payload: { ...data } })
   }
 

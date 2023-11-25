@@ -32,7 +32,6 @@ const SidebarChatList = (props: Props) => {
 
   useEffect(() => {
     const newFriendHandler = (newFriend: User) => {
-      console.log('new friend handler newFriend bind', newFriend)
       setChatFriends((prev) => [...prev, newFriend])
       router.refresh()
     }
@@ -53,13 +52,11 @@ const SidebarChatList = (props: Props) => {
           senderName={extendedMessage.senderName}
         />
       ))
-      console.log('chat handler newMessage bind', extendedMessage)
       setUnseenMessages((prev) => [...prev, message])
     }
     const newActiveChatHandler = async (newChat: CustomChat) => {
       try {
         const { data: newPartner } = await getUserAPI(newChat.partnerId)
-        console.log('active chat handler newActiveChat bind', newChat)
         setChatFriends((prev) => [...prev, newPartner])
       } catch (error) {
         toast.error('An error ocurred while creating new chat')

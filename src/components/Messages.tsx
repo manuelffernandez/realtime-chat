@@ -28,7 +28,6 @@ const Messages: FC<Props> = (props) => {
 
   useEffect(() => {
     const messageHandler = (message: Message) => {
-      console.log('message handler incomingMessage bind')
       setMessages((prev) => [message, ...prev])
     }
     pusherClient.subscribe(chatById(chatId))
