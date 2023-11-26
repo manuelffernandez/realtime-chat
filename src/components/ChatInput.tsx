@@ -28,9 +28,8 @@ const ChatInput: FC<Props> = (props) => {
     } catch (error) {
       console.log('send message submit handler error', error)
       toast.error('Something went wrong.')
-    } finally {
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   return (
