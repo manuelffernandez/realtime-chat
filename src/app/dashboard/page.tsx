@@ -48,41 +48,42 @@ const DashboardPage = async () => {
       {lastFriendMessages.length === 0 ? (
         <p className='text-sm text-zinc-500'>Nothing to show here...</p>
       ) : (
-        lastFriendMessages.map((lastFriendMessage) => {
-          const { friend, lastMessage } = lastFriendMessage
-          return (
-            <div key={friend.id} className='relative rounded-md border border-zinc-200 bg-zinc-50 p-3'>
-              <div className='absolute inset-y-0 right-4 flex items-center'>
-                <ChevronRight className='h-7 w-7 text-zinc-400' />
-              </div>
+        lastFriendMessages
+          .sort((a, b) => a.lastMessage.timestamp - b.lastMessage.timestamp)
+          .map((lastFriendMessage) => {
+            const { friend, lastMessage } = lastFriendMessage
+            return (
+              <Link key={friend.id} href={`${routes.pages.chat}/${chatIdConstructor(session.user.id, friend.id)}`}>
+                <div className='relative mb-2 rounded-md border border-zinc-200 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100'>
+                  <div className='absolute inset-y-0 right-4 flex items-center'>
+                    <ChevronRight className='h-7 w-7 text-zinc-400' />
+                  </div>
 
-              <Link
-                href={`${routes.pages.chat}/${chatIdConstructor(session.user.id, friend.id)}`}
-                className='relative sm:flex'
-              >
-                <div className='mb-4 flex-shrink-0 sm:mb-0 sm:mr-4'>
-                  <div className='relative h-6 w-6'>
-                    <Image
-                      referrerPolicy='no-referrer'
-                      className='rounded-full'
-                      alt={`${friend.name} profile picture`}
-                      src={friend.image}
-                      fill
-                    />
+                  <div className='relative sm:flex'>
+                    <div className='mb-4 flex-shrink-0 sm:mb-0 sm:mr-4'>
+                      <div className='relative h-6 w-6'>
+                        <Image
+                          referrerPolicy='no-referrer'
+                          className='rounded-full'
+                          alt={`${friend.name} profile picture`}
+                          src={friend.image}
+                          fill
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className='text-lg font-semibold'>{friend.name}</h4>
+                      <p className='mt-1 max-w-md'>
+                        <span className='text-zinc-400'>{lastMessage.senderId === session.user.id ? 'You: ' : ''}</span>
+                        {lastMessage.text}
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-                <div>
-                  <h4 className='text-lg font-semibold'>{friend.name}</h4>
-                  <p className='mt-1 max-w-md'>
-                    <span className='text-zinc-400'>{lastMessage.senderId === session.user.id ? 'You: ' : ''}</span>
-                    {lastMessage.text}
-                  </p>
-                </div>
               </Link>
-            </div>
-          )
-        })
+            )
+          })
       )}
       <SignOutButton />
     </div>
