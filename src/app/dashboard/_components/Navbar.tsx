@@ -38,17 +38,17 @@ const Navbar = async (props: Props) => {
           <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>
           <ul role='list' className='-mx-2 mt-2 space-y-1'>
             {sidebarOptions.map((option) => {
-              const { Icon } = option
+              const { id, href, name, Icon } = option
               return (
-                <li key={option.id}>
+                <li key={id}>
                   <Link
-                    href={option.href}
+                    href={href}
                     className='group flex gap-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600'
                   >
                     <span className='-h-6 flex w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600'>
                       <Icon className='h-4 w-4' />
                     </span>
-                    <span className='truncate'>{option.name}</span>
+                    <span className='truncate'>{name}</span>
                   </Link>
                 </li>
               )
