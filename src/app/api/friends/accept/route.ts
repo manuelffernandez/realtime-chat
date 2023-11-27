@@ -8,7 +8,7 @@ import { ZodError, z } from 'zod'
 export const POST = async (req: Request) => {
   const {
     channels: { friendRequestsById },
-    events: { outgoingFriendRequests }
+    events: { outgoingFriendRequests, acceptedFriendRequest }
   } = pusher
 
   try {
@@ -31,6 +31,7 @@ export const POST = async (req: Request) => {
       senderId: idToAccept,
       senderEmail: emailToAccept
     })
+    await pusherServer.trigger(friendRequestsById(idToAccept), acceptedFriendRequest, session.user)
 
     return new Response('OK')
   } catch (error) {

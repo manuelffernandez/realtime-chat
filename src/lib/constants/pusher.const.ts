@@ -8,6 +8,7 @@ export const pusher = {
   events: {
     incomingFriendRequests: 'incoming_friend_requests',
     outgoingFriendRequests: 'outgoing_friend_requests',
+    acceptedFriendRequest: 'accepted__friend__request',
     incomingMessage: 'incoming_message',
     newMessage: 'new_message',
     newFriend: 'new_friend',
