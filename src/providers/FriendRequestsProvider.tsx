@@ -48,29 +48,37 @@ const reducer = (state: FriendRequestsState, action: FriendRequestsAction): Frie
 const FriendRequestsProvider = ({ children }: { children: ReactNode }) => {
   const {
     channels: { friendRequestsById },
-    events: { incomingFriendRequests, outgoingFriendRequests }
+    events: { incomingFriendRequests, outgoingFriendRequests, acceptedFriendRequest }
   } = pusher
 
   const [state, dispatch] = useReducer(reducer, initialState)
   const { data: session, status } = useSession()
 
-  const handleAdd = (data: IncomingFriendRequest) => {
+  const handleIncomingFriendRequest = (data: IncomingFriendRequest) => {
     dispatch({ type: 'ADD_FRIEND_REQUEST', payload: { ...data } })
   }
-  const handleRemove = (data: IncomingFriendRequest) => {
+  const handleOutgoingFriendRequest = (data: IncomingFriendRequest) => {
     dispatch({ type: 'REMOVE_FRIEND_REQUEST', payload: { ...data } })
+  }
+
+  const handleAcceptedFriendRequest = (data: User) => {
+    toast.success(`${data.name} has accepted your friend request`)
   }
 
   useEffect(() => {
     if (status === 'authenticated') {
+      console.log('channel: ', friendRequestsById(session.user.id))
+      console.log('event: ', acceptedFriendRequest)
       pusherClient.subscribe(friendRequestsById(session.user.id))
-      pusherClient.bind(incomingFriendRequests, handleAdd)
-      pusherClient.bind(outgoingFriendRequests, handleRemove)
+      pusherClient.bind(incomingFriendRequests, handleIncomingFriendRequest)
+      pusherClient.bind(outgoingFriendRequests, handleOutgoingFriendRequest)
+      pusherClient.bind(acceptedFriendRequest, handleAcceptedFriendRequest)
 
       return () => {
         pusherClient.unsubscribe(friendRequestsById(session.user.id))
-        pusherClient.unbind(incomingFriendRequests, handleAdd)
-        pusherClient.unbind(outgoingFriendRequests, handleRemove)
+        pusherClient.unbind(incomingFriendRequests, handleIncomingFriendRequest)
+        pusherClient.unbind(outgoingFriendRequests, handleOutgoingFriendRequest)
+        pusherClient.unbind(acceptedFriendRequest, handleAcceptedFriendRequest)
       }
     }
   }, [status])
