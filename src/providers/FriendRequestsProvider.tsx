@@ -67,8 +67,6 @@ const FriendRequestsProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      console.log('channel: ', friendRequestsById(session.user.id))
-      console.log('event: ', acceptedFriendRequest)
       pusherClient.subscribe(friendRequestsById(session.user.id))
       pusherClient.bind(incomingFriendRequests, handleIncomingFriendRequest)
       pusherClient.bind(outgoingFriendRequests, handleOutgoingFriendRequest)
