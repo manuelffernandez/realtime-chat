@@ -1,8 +1,34 @@
-# realtime-chat
+# Realtime chat with NextJS 13 :rocket:
 
 ## Description
 
-Lorem ipsum
+This project draws inspiration from a tutorial by [Josh tried coding](https://www.youtube.com/@joshtriedcoding) YouTube channel. While the initial concept originates from his work, I've implemented substantial enhancements to the code and project structure based on my own discretion.
+
+### Main features :page_facing_up:
+
+**Realtime chat:** instant communication with other users within the platform.
+
+**Friend management:** Add and delete friends.
+
+**Instant notifications:** Receive in-time notifications while logged.
+
+### Techs :wrench:
+
+**NextJS:** React fullstack framework.
+
+**Pusher:** An API to implement realtime features based on pub/sub channels.
+
+**Redis y Upstash:** Serverless data platform with an integrated Redis db client.
+
+**NextAuth:** Open-source authentication solution for Next.js apps.
+
+### Screenshot :iphone:
+
+<img src='./src/public/screenshot_2.png' alt='chat screenshot' >
+
+## Deploy link :link:
+
+### :arrow_right: [https://realtime-chat-prod.vercel.app](https://realtime-chat-prod.vercel.app) :arrow_left:
 
 ## Run locally
 
@@ -30,9 +56,11 @@ Run the development server:
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+##### Ensure you have a Google account to access and log in to the app.
+
 #### Scripts
 
-Additional scripts detail
+scripts detail
 
 - dev: starts development server on port 3000 by default
 - build: starts building process for production
@@ -44,7 +72,7 @@ Additional scripts detail
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Learn Next.js](https://nextjs.org/learn/dashboard-app) - an interactive Next.js tutorial.
 
 ## Contact me :arrow_down:
 
